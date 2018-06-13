@@ -1,0 +1,169 @@
+
+<div class="right-block">
+  <div class="sum-of-operations"> 
+    <!-- Button to initialise sum of operations -->
+    <p>Sum of selected operations = {{sumOfOperations}} €</p>
+    <button mat-stroked-button color="accent" (click)="initializeSumOfOperations()">Réinitialiser</button> 
+
+    <br><br>
+    
+    <!-- Manage categories -->
+    <div *ngFor="let category of categories; let idx = index">
+        <mat-radio-button #isSelectedCategory
+          [value]="category" 
+          (change)="addOperationToSelectedCategory(isSelectedCategory.value)">
+          {{ category }}
+        </mat-radio-button>
+    </div>
+
+    <br><br>
+
+    <!-- Create a new banking category -->
+    <input #newCategory 
+      placeholder="Add a new category..." 
+      (keyup.enter)="createOperationCategory(newCategory.value)"
+      (blur)="createOperationCategory(newCategory.value); newCategory.value=''">
+    <button (click)="createOperationCategory(newCategory.value)">Add</button>
+
+    <br><br>
+
+    <!-- Fetch operations to selected category -->
+    <div *ngIf="categorySelected === true">
+      <p>{{ myCategory.name }} = {{sumOfOperations}} €</p>
+      <br><br>
+      {{listDes}} operations pour la catégorie "{{ myCategory.name }}" : 
+      <div *ngFor="let operation of selectedOperationForCategorization">
+        {{ operation.bankingOperationLabel }}
+      </div>
+    </div>
+  </div>
+</div>
+  
+<div class="left-block">
+  <!-- Table of banking operations -->
+  <p-table [value]="bankingOperations"  
+      [scrollable]="true" scrollHeight="200px" 
+      [paginator]="true" 
+      [rows]="10">
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Operation</th>
+              <th>Value</th>
+          </tr>
+      </ng-template>
+      <ng-template let-row let-bankingOperations pTemplate="body">
+          <tr (click)="selectOperationOnRowClick(row)">
+              <td>{{bankingOperations.bankingOperationLabel}}</td>
+              <td>{{bankingOperations.bankingOperationValue}}</td>
+          </tr>
+      </ng-template>
+  </p-table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Angular Material table and components-->
+  <!-- <div class="sum-of-operations"> 
+    Button to initialise sum of operations
+    <p>Sum of selected operations = {{sumOfOperations}} €</p>
+    <button mat-stroked-button color="accent" (click)="initializeSumOfOperations()">Réinitialiser</button> 
+
+    <br><br>
+    
+    Manage categories
+    <div *ngFor="let category of categories; let idx = index">
+        <mat-radio-button #isSelectedCategory
+          [value]="category" 
+          (change)="addOperationToSelectedCategory(isSelectedCategory.value)">
+          {{ category }}
+        </mat-radio-button>
+    </div>
+
+    <br><br>
+
+    Create a new banking category
+    <input #newCategory 
+      placeholder="Add a new category..." 
+      (keyup.enter)="createOperationCategory(newCategory.value)"
+      (blur)="createOperationCategory(newCategory.value); newCategory.value=''">
+    <button (click)="createOperationCategory(newCategory.value)">Add</button>
+
+    <br><br>
+
+    Fetch operations to selected category
+    <div *ngIf="categorySelected === true">
+      <p>{{ myCategory.name }} = {{sumOfOperations}} €</p>
+      <br><br>
+      {{listDes}} operations pour la catégorie "{{ myCategory.name }}" : 
+      <div *ngFor="let operation of selectedOperationForCategorization">
+        {{ operation.bankingOperationLabel }}
+      </div>
+    </div>
+  </div>
+</div>
+
+Angular Material table
+<div class="left-block">
+  <table mat-table [dataSource]="bankingOperations" matSort class="mat-elevation-z8">
+
+    <ng-container matColumnDef="bankingOperationLabel">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Operation </th>
+      <td mat-cell *matCellDef="let element"> {{element.bankingOperationLabel}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="bankingOperationValue">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Value </th>
+      <td mat-cell *matCellDef="let element"> {{element.bankingOperationValue}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tableHeaders"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: tableHeaders;" (click)="selectOperationOnRowClick(row)"></tr>
+
+  </table>
+
+  Pagination: not working
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+
+
+<!-- Classical table -->
+<!-- <table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr (click)="handleRowSelect($event)" *ngFor="let bankingOperation of bankingOperations">
+      <td>{{ bankingOperation.bankingOperationLabel }}</td>
+      <td>{{ bankingOperation.bankingOperationValue }}</td>
+    </tr>
+  </tbody>
+</table> -->
+
