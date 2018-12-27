@@ -5,28 +5,21 @@ import {map} from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { BankingOperations } from 'src/app/container/model/bankingOperations';
-import { Car } from 'src/app/table-of-operations/table-of-operations.component';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiBankingOperationsService {
 
-  private _api = '/MoneyManager/getBankingOperations';  
+  private _api = '/MoneyManager/getBankingOperations';
 
   constructor(private http: Http) { }
 
+  /**
+   * Get banking operations from REST API ws
+   */
   public getBankingOperations(): Observable<BankingOperations[]> {
     return this.http.get(environment._localhost + this._api).pipe(
-                    map((res:Response) => res.json()));
+                    map((res: Response) => res.json()));
   }
-
-  getCarsSmall() {
-    return this.http.get('/assets/cars-small.json')
-                .toPromise()
-                .then(res => <Car[]> res.json().data)
-                .then(data => { return data; });
-}
 }

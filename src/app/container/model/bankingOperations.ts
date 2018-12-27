@@ -1,4 +1,6 @@
 export interface BankingOperations {
-    bankingOperationLabel: String;
-    bankingOperationValue: String
+    bankingOperationLabel: string;
+    bankingOperationValue: string;
+    bankingOperationDate: string;
+    bankingOperationCategory: string;
 }

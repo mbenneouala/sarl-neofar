@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import { protractor, element, by, browser } from 'protractor';
 
 describe('workspace-project App', () => {
   let page: AppPage;
@@ -9,6 +10,12 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getParagraphText()).toEqual('Money Manager');
   });
+
+  it('should display application name', () => {
+    page.navigateTo();
+    expect(page.getTitle()).toEqual('Money Manager');
+  });
+
 });

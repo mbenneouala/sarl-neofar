@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ContainerComponent } from 'src/app/container/container.component';
+import { TableOfOperationsComponent } from 'src/app/table-of-operations/table-of-operations.component';
+import { CategorizationComponent } from './categorization/categorization.component';
+import { TableOfBankTransactionsComponent } from './components/table-of-bank-transactions/table-of-bank-transactions.component';
 
 
 const routes: Routes = [
-  { path: 'Consultation', component: ContainerComponent }
+  { path: 'myAccount', component: TableOfOperationsComponent },
+  { path: 'Categorisation', component: CategorizationComponent },
+  { path: 'table-of-bank-transactions', component: TableOfBankTransactionsComponent }
 ];
 
 @NgModule({

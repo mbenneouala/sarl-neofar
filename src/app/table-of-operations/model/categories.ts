@@ -1,8 +1,9 @@
-export class Category {
-    name: string;
-    operations: string[];
-    sumOfOperationsCategory: number = 0;
+import { BankingOperations } from "src/app/container/model/bankingOperations";
 
-    constructor(){
-      }
+export class Categories {
+    name: string;
+    sumOfCategorizedOperations: number = 0;
+    listOfCategorizedBankingOperations: BankingOperations[] = [];
+
+    constructor() {}
 }

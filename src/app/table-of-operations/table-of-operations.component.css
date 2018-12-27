@@ -4,22 +4,30 @@ table {
     margin-left: 30%; */
   }
 
-.right-block {
-  width:50%;
-  display: block;
-  float: right;
-}
-
-.left-block {
-  width:50%;
-  display: block;
-  float: left;
-}
-
 .left-block td {
   cursor: pointer;
 }
 
-.sum-of-operations {
-  padding: 5%;
+#sum-of-operations {
+  /* padding: 5%; */
+  /* background-color: rgba(98, 53, 156, 0.37); */
+}
+
+.custombar1 .ui-scrollpanel-wrapper {
+  border-right: 9px solid #f4f4f4;
+}
+  
+.custombar1 .ui-scrollpanel-bar {
+  background-color: #1976d2;
+  opacity: 1;
+  transition: background-color .3s;
+}
+  
+.custombar1 .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
+}
+
+/* Chang dataTable font size */
+.ui-widget {
+  font-size: 13px;
 }

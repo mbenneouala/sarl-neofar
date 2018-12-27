@@ -1,6 +1,16 @@
-.title-money-manager {
-    font-family: Courier New, Courier, monospace;
-    color: purple;
+@import url('https://fonts.googleapis.com/css?family=Syncopate');
 
+.title-money-manager-angular-javaee {
+    font-family: 'Syncopate';
+    font-size: 200%;
+    width: 100%;
+    color: rgba(103, 47, 150, 0.82);
+    text-align:left; 
+    margin:0;
+    margin-top: 3%;
 }
 
+#menu-links {
+    text-decoration: none;
+    padding: 5px;
+}

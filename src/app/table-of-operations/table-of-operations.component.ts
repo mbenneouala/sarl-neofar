@@ -4,185 +4,166 @@ import { ApiBankingOperationsService } from 'src/app/api-banking-operations.serv
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Subscription, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Category } from 'src/app/table-of-operations/model/categories';
-import { SelectedOperationForCategorization } from 'src/app/table-of-operations/model/selectedOperationForCategorization';
+import { Categories } from 'src/app/table-of-operations/model/categories';
+import { LazyLoadEvent } from 'primeng/api';
+import { ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import {Message} from 'primeng/components/common/api';
+import * as XLSX from 'ts-xlsx';
 
-
-
-export interface Car {
-  vin;
-  year;
-  brand;
-  color;
-}
-
-export class IValueOfLov {
-  label;
-  value;
-  longdescription;
-  valueSeqOrder;
-
-  constructor(label: string, value: string, longdescription: string, valueSeqOrder: string) {
-    this.label = label;
-    this.value = value;
-    this.longdescription = longdescription;
-    this.valueSeqOrder = valueSeqOrder;
-  }
-}
-
-export class ListOfValues {
-  public data: IValueOfLov[];
-  public lovName: string;
-  public seqOrder: string;
-
-  constructor(pData: IValueOfLov[], pLovName: string, pSeqOrder: string) { 
-    this.data = pData;
-    this.lovName = pLovName;
-    this.seqOrder = pSeqOrder;
-  }
-
-  public setLovName(pLoveName: string): void {
-    this.lovName = pLoveName;
-  }
-}
 
 @Component({
   selector: 'app-table-of-operations',
   templateUrl: './table-of-operations.component.html',
-  styleUrls: ['./table-of-operations.component.css']
+  styleUrls: ['./table-of-operations.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TableOfOperationsComponent implements OnInit {
-  cols: { field: string; header: string; }[];
 
-  cars: any;
-
-
-  /* Attributes */
+  /**
+   * Attributes
+   */ 
   private listDes: string = 'Liste des';
-  private tableHeaders = ['bankingOperationLabel', 'bankingOperationValue'];
-  private bankingOperations: BankingOperations[] = [];
   private sumOfOperations: number = 0;
   private categories: string[] = ['Courses', 'Transports en commun', 'Abonnements', 'Loisirs'];
-  private myCategory = new Category;
   private categorySelected: boolean = false;
-  private selectedOperationForCategorization: SelectedOperationForCategorization[] = [];
+  private selectedOperationForCategorization = [];
+  private bo: BankingOperations[];
+  private totalRecords: number;
+  private loading: boolean;
+  private uberCategory: Categories = new Categories();
+  private sum: number = 0;
+  private categoryName: string;
+  private msgs: Message[] = [];
+  private bankingOperations: BankingOperations[];
+  cols: any[];
 
-  /* Constructor */
+  /**
+   * Constructor
+   * @param apiBankingOperationsService
+   */
   constructor(private apiBankingOperationsService : ApiBankingOperationsService) { }
 
-  /* Select a banking operation with a click */
+  /**
+   * Handle a row in the banking operations table
+   * @param row 
+   */
   private selectOperationOnRowClick(row) {
     if (row.bankingOperationValue < 0 && !this.selectedOperationForCategorization.includes(row)) {
       this.selectedOperationForCategorization.push(row);
-      this.sumOfOperations += -(Math.round(row.bankingOperationValue).toFixed(2));
-      console.log("this.sumOfOperations=")     
-      console.log(this.sumOfOperations)     
-      
+      console.log('this.selectedOperationForCategorization')
+      console.log(this.selectedOperationForCategorization)
+      this.sumOfOperations += -(Math.round(row.bankingOperationValue).toFixed(2));    
     }
   }
 
-  /* Fetch operations to selected category*/
+  /**
+   * Fetch operations to selected category
+   * @param isSelectedCategory 
+   */
   private addOperationToSelectedCategory(isSelectedCategory): void {
     this.initializeSumOfOperations();
     this.categorySelected = true;
     if(isSelectedCategory) {
       this.selectedOperationForCategorization = [];
-      this.myCategory.name = isSelectedCategory;
+      this.categoryName = isSelectedCategory;
     }
   }
 
-  /* Create a new banking category */
+  /**
+   * Create a new banking category
+   * @param newCategory 
+   */
   private createOperationCategory(newCategory: string) {
     if(newCategory) {
       this.categories.push(newCategory);
     }
   }
 
-  /* Initialise sum of operations */
+  /**
+   * Initialise sum of operations
+   */
   private initializeSumOfOperations(): void {
     this.sumOfOperations = 0;
   }
 
-  /* calculate the sum of categorized operations: not used */
+  /**
+   * NOT WORKING: calculate the sum of categorized operations: not used
+   * @param operationValue 
+   */
   private doSumOfCategorizedOperations(operationValue: number) {
-    this.myCategory.sumOfOperationsCategory += -(operationValue);
+    //this.myCategory.sumOfOperationsCategory += -(operationValue);
   }
 
-  /* get banking operations for REST API */
+  /**
+   * Get banking operations for REST API
+   */
   private getBankingOperations(): void {
     this.apiBankingOperationsService.getBankingOperations().subscribe(data => {
       this.bankingOperations = data;
+      // this.totalRecords = this.bankingOperations.length; // enable when lazy loading
     });          
   }
 
-  valueOfLov: IValueOfLov[] = [];
-  
-  listOfValues: ListOfValues;
-
-  listOfValuesWithoutDuplicates: ListOfValues;
-
   /**
-   * Set the list of values
+   * DISABLED: get UBER operations from SUBSCRIBING REST API 
    */
-  setListOfValues(): void {
-
-    this.valueOfLov.push(new IValueOfLov('a','r','s','p'));
-    this.valueOfLov.push(new IValueOfLov('z','d','x','m'));
-    this.valueOfLov.push(new IValueOfLov('g','b','v','c'));
-    this.valueOfLov.push(new IValueOfLov('g','b','v','c'));
-    
-    this.listOfValues = new ListOfValues(this.valueOfLov, "LOV_NAME", "SEQ_ORDER");
-
-    console.log("List of values")
-    console.log(this.listOfValues);
-  }
-
-  /**
-   * Remove duplicates from the list of values
-   */
-  removeDuplicatesInListOfValues(): void {
-    // this.listOfValues.data.filter((el, i, a) => i === a.indexOf(el));
-    // this.listOfValues.data = Array.from(new Set(this.listOfValues.data));
-
-    var newarr = [this.listOfValues.data[0]];
-    for (var i=1; i<this.listOfValues.data.length; i++) {
-       if (this.listOfValues.data[i].label!=this.listOfValues.data[i-1].label) {
-        newarr.push(this.listOfValues.data[i]);
-       }
-
-    }
-    console.log("List of values WITHOUT duplicates")
-    console.log(newarr);
-  }
-
-  /**
-   * Sort the list of values
-   */
-  sortListOfValues(): void {
-    this.listOfValues.data.sort((leftSide, rightSide): number => {
-      if(leftSide.label < rightSide.label) return -1;
-      if(leftSide.label > rightSide.label) return 1;
-      return 0;
+  private getUberOperationsApi(): void {
+    this.apiBankingOperationsService.getBankingOperations().subscribe(data => {
+      for (var i = 0; i < this.bankingOperations.length; i++) {
+        // if(this.bankingOperations[i].bankingOperationLabel.includes("UBER")) {
+        //   this.tempBankingOperations.push(this.bankingOperations[i]);
+        //   this.sum += -(parseFloat(this.bankingOperations[i].bankingOperationValue));
+        // }
+      }
+      //this.uberCategory = new Categories("UBER", this.tempBankingOperations, this.sum);
     });
-    console.log("List of sorted values by label")
-    console.log(this.listOfValues);
+  }
+
+    /**
+   * get UBER operations from excel FILE
+   */
+  private getUberOperations(): void {
+    for (var i = 0; i < this.bankingOperations.length; i++) {
+      if(this.bankingOperations[i].bankingOperationLabel.includes("UBER")) {
+        this.uberCategory.listOfCategorizedBankingOperations.push(this.bankingOperations[i]);
+        this.sum += -(parseFloat(this.bankingOperations[i].bankingOperationValue));
+      }
+    }
+    console.log(this.sum)
+  }
+
+  /**
+   * DISABLED: Get banking operations from REST API with Lazy Loading (to enable this function, 
+   * set [lazy]="true" & [value]="bo" in the p-table HTML tag)
+   * @param event 
+   */
+  loadLazy(event: LazyLoadEvent) {
+    this.loading = true;
+    setTimeout(() => {
+        if (this.bankingOperations) {
+            this.bo = this.bankingOperations.slice(event.first, (event.first + event.rows));
+            this.loading = false;
+        }
+    }, 10);
+  }
+
+  /**
+   * Display a message when sum of operations is initialized
+   */
+  showInfo() {
+    this.msgs = [];
+    this.msgs.push({severity:'info', summary:'Info Message', detail:'Sum of operations was successfully initialized'});
   }
   
   ngOnInit() {
-    //this.setListOfValues();
-    //this.sortListOfValues();
-    //this.removeDuplicatesInListOfValues();
-
+    /* Get banking operations from REST API */
     this.getBankingOperations(); 
 
-    this.apiBankingOperationsService.getCarsSmall().then(cars => this.cars = cars);
-    
-            this.cols = [
-                { field: 'vin', header: 'Vin' },
-                { field: 'year', header: 'Year' },
-                { field: 'brand', header: 'Brand' },
-                { field: 'color', header: 'Color' }
-            ];
+    this.cols = [
+      { field: 'bankingOperationDate', header: 'Date', width: '10%'},
+      { field: 'bankingOperationLabel', header: 'Libéllé', width: '25%' },
+      { field: 'bankingOperationValue', header: 'Valeur', width: '10%' },
+      { field: 'bankingOperationType', header: 'Type', width: '10%' }
+  ];
   }
-  
 }
