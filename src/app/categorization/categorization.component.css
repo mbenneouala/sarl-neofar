@@ -1,0 +1,23 @@
+.categories-border {
+    /* border: 1px solid black; */
+    width: 40%;
+    padding: 1%;
+    background-color: rgba(158, 227, 236, 0.39);
+}
+
+.zero-button {
+    border: 1px red;
+    background-color: red;
+    color: white;
+    border-radius: 25px;
+}
+
+#inline-display {
+    display: inline-block;
+}
+
+#sliders-border {
+    /* width: 40%; */
+    padding: 1%;
+    background-color: rgba(84, 84, 184, 0.425);
+}

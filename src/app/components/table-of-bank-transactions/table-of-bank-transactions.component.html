@@ -1,0 +1,26 @@
+<br/>
+
+<p-table [columns]="cols" [value]="bankingOperations" [resizableColumns]="true" [scrollable]="true" scrollHeight="400px"
+[reorderableColumns]="true" [lazy]="false" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalRecords"
+[loading]="loading" selectionMode="single">
+<ng-template pTemplate="colgroup" let-columns>
+  <colgroup>
+    <col *ngFor="let col of columns" [style.width]="col.width">
+  </colgroup>
+</ng-template>
+<ng-template pTemplate="header" let-columns>
+  <tr>
+    <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field">
+      {{col.header}}
+      <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+    </th>
+  </tr>
+</ng-template>
+<ng-template pTemplate="body" let-rowData let-columns="columns">
+  <tr [pSelectableRow]="rowData">
+    <td *ngFor="let col of columns" class="ui-resizable-column">
+      {{rowData[col.field]}}
+    </td>
+  </tr>
+</ng-template>
+</p-table>
