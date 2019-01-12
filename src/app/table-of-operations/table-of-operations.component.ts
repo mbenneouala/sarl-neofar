@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BankingOperations } from 'src/app/container/model/bankingOperations';
+import { BankingOperations } from '../models/bankingOperations';
 import { ApiBankingOperationsService } from 'src/app/api-banking-operations.service';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Subscription, Observable } from 'rxjs';
@@ -21,17 +21,17 @@ export class TableOfOperationsComponent implements OnInit {
 
   /**
    * Attributes
-   */ 
-  private listDes: string = 'Liste des';
-  private sumOfOperations: number = 0;
+   */
+  private listDes = 'Liste des';
+  private sumOfOperations = 0;
   private categories: string[] = ['Courses', 'Transports en commun', 'Abonnements', 'Loisirs'];
-  private categorySelected: boolean = false;
+  private categorySelected = false;
   private selectedOperationForCategorization = [];
   private bo: BankingOperations[];
   private totalRecords: number;
   private loading: boolean;
   private uberCategory: Categories = new Categories();
-  private sum: number = 0;
+  private sum = 0;
   private categoryName: string;
   private msgs: Message[] = [];
   private bankingOperations: BankingOperations[];
@@ -41,29 +41,29 @@ export class TableOfOperationsComponent implements OnInit {
    * Constructor
    * @param apiBankingOperationsService
    */
-  constructor(private apiBankingOperationsService : ApiBankingOperationsService) { }
+  constructor(private apiBankingOperationsService: ApiBankingOperationsService) { }
 
   /**
    * Handle a row in the banking operations table
-   * @param row 
+   * @param row
    */
   private selectOperationOnRowClick(row) {
     if (row.bankingOperationValue < 0 && !this.selectedOperationForCategorization.includes(row)) {
       this.selectedOperationForCategorization.push(row);
-      console.log('this.selectedOperationForCategorization')
-      console.log(this.selectedOperationForCategorization)
-      this.sumOfOperations += -(Math.round(row.bankingOperationValue).toFixed(2));    
+      console.log('this.selectedOperationForCategorization');
+      console.log(this.selectedOperationForCategorization);
+      this.sumOfOperations += -(Math.round(row.bankingOperationValue).toFixed(2));
     }
   }
 
   /**
    * Fetch operations to selected category
-   * @param isSelectedCategory 
+   * @param isSelectedCategory
    */
   private addOperationToSelectedCategory(isSelectedCategory): void {
     this.initializeSumOfOperations();
     this.categorySelected = true;
-    if(isSelectedCategory) {
+    if (isSelectedCategory) {
       this.selectedOperationForCategorization = [];
       this.categoryName = isSelectedCategory;
     }
@@ -71,10 +71,10 @@ export class TableOfOperationsComponent implements OnInit {
 
   /**
    * Create a new banking category
-   * @param newCategory 
+   * @param newCategory
    */
   private createOperationCategory(newCategory: string) {
-    if(newCategory) {
+    if (newCategory) {
       this.categories.push(newCategory);
     }
   }
@@ -88,10 +88,10 @@ export class TableOfOperationsComponent implements OnInit {
 
   /**
    * NOT WORKING: calculate the sum of categorized operations: not used
-   * @param operationValue 
+   * @param operationValue
    */
   private doSumOfCategorizedOperations(operationValue: number) {
-    //this.myCategory.sumOfOperationsCategory += -(operationValue);
+    // this.myCategory.sumOfOperationsCategory += -(operationValue);
   }
 
   /**
@@ -101,21 +101,21 @@ export class TableOfOperationsComponent implements OnInit {
     this.apiBankingOperationsService.getBankingOperations().subscribe(data => {
       this.bankingOperations = data;
       // this.totalRecords = this.bankingOperations.length; // enable when lazy loading
-    });          
+    });
   }
 
   /**
-   * DISABLED: get UBER operations from SUBSCRIBING REST API 
+   * DISABLED: get UBER operations from SUBSCRIBING REST API
    */
   private getUberOperationsApi(): void {
     this.apiBankingOperationsService.getBankingOperations().subscribe(data => {
-      for (var i = 0; i < this.bankingOperations.length; i++) {
+      for (let i = 0; i < this.bankingOperations.length; i++) {
         // if(this.bankingOperations[i].bankingOperationLabel.includes("UBER")) {
         //   this.tempBankingOperations.push(this.bankingOperations[i]);
         //   this.sum += -(parseFloat(this.bankingOperations[i].bankingOperationValue));
         // }
       }
-      //this.uberCategory = new Categories("UBER", this.tempBankingOperations, this.sum);
+      // this.uberCategory = new Categories("UBER", this.tempBankingOperations, this.sum);
     });
   }
 
@@ -123,19 +123,19 @@ export class TableOfOperationsComponent implements OnInit {
    * get UBER operations from excel FILE
    */
   private getUberOperations(): void {
-    for (var i = 0; i < this.bankingOperations.length; i++) {
-      if(this.bankingOperations[i].bankingOperationLabel.includes("UBER")) {
+    for (let i = 0; i < this.bankingOperations.length; i++) {
+      if (this.bankingOperations[i].bankingOperationLabel.includes('UBER')) {
         this.uberCategory.listOfCategorizedBankingOperations.push(this.bankingOperations[i]);
         this.sum += -(parseFloat(this.bankingOperations[i].bankingOperationValue));
       }
     }
-    console.log(this.sum)
+    console.log(this.sum);
   }
 
   /**
-   * DISABLED: Get banking operations from REST API with Lazy Loading (to enable this function, 
+   * DISABLED: Get banking operations from REST API with Lazy Loading (to enable this function,
    * set [lazy]="true" & [value]="bo" in the p-table HTML tag)
-   * @param event 
+   * @param event
    */
   loadLazy(event: LazyLoadEvent) {
     this.loading = true;
@@ -152,12 +152,12 @@ export class TableOfOperationsComponent implements OnInit {
    */
   showInfo() {
     this.msgs = [];
-    this.msgs.push({severity:'info', summary:'Info Message', detail:'Sum of operations was successfully initialized'});
+    this.msgs.push({severity: 'info', summary: 'Info Message', detail: 'Sum of operations was successfully initialized'});
   }
-  
+
   ngOnInit() {
     /* Get banking operations from REST API */
-    this.getBankingOperations(); 
+    this.getBankingOperations();
 
     this.cols = [
       { field: 'bankingOperationDate', header: 'Date', width: '10%'},

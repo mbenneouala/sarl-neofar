@@ -1,8 +1,8 @@
-import { BankingOperations } from "src/app/container/model/bankingOperations";
+import { BankingOperations } from '../../models/bankingOperations';
 
 export class Categories {
     name: string;
-    sumOfCategorizedOperations: number = 0;
+    sumOfCategorizedOperations = 0;
     listOfCategorizedBankingOperations: BankingOperations[] = [];
 
     constructor() {}

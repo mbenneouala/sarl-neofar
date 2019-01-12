@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { BankingOperations } from 'src/app/container/model/bankingOperations';
+import { BankingOperations } from './../app/models/bankingOperations';
 
 @Injectable({
   providedIn: 'root'
