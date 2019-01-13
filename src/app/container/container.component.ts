@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from 'primeng/components/common/message';
 import * as XLSX from 'ts-xlsx';
-import { BankingOperations } from 'src/app/container/model/bankingOperations';
 import { Router } from '@angular/router';
 
 
@@ -9,14 +8,14 @@ import { Router } from '@angular/router';
   selector: 'app-container',
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.css'],
-  
+
 })
 export class ContainerComponent implements OnInit {
 
   constructor() { }
 
   ngOnInit() {
-  
+
   }
 
 }

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiBankingOperationsService } from '../api-banking-operations.service';
-import { BankingOperations } from '../container/model/bankingOperations';
-import { Categories } from './model/categories';
-import { stringConst } from '../../environments/stringConst';
+import { BankingOperations } from 'src/app/models/bankingOperations';
+import { Categories } from 'src/app/models/categories';
+import { ApiBankingOperationsService } from 'src/app/api-banking-operations.service';
+import { stringConst } from 'src/environments/stringConst';
+
 
 @Component({
-  selector: 'app-categorization',
-  templateUrl: './categorization.component.html',
-  styleUrls: ['./categorization.component.css']
+  selector: 'app-transaction-categorisation',
+  templateUrl: './transaction-categorisation.component.html',
+  styleUrls: ['./transaction-categorisation.component.css']
 })
-export class CategorizationComponent implements OnInit {
+export class TransactionCategorisationComponent implements OnInit {
 
   /**
    * Attributes
@@ -47,8 +48,8 @@ export class CategorizationComponent implements OnInit {
 
   /**
    * Select a category
-   * 
-   * @param isSelectedCategory 
+   *
+   * @param isSelectedCategory
    */
   private onRadioButtonClick(isSelectedCategory): void {
     if (isSelectedCategory) {
@@ -58,7 +59,7 @@ export class CategorizationComponent implements OnInit {
 
   /**
  * Add operation to the category cell when row selected
- * @param event 
+ * @param event
  */
   private onRowSelect(event) {
     if (this.selectedCategory) {
@@ -69,7 +70,7 @@ export class CategorizationComponent implements OnInit {
         this.newCategory.name = this.selectedCategory;
         this.newCategory.listOfCategorizedBankingOperations.push(event.data);
         this.newCategory.sumOfCategorizedOperations += -(event.data.bankingOperationValue);
-        if (this.temporaryListOfCategories.name != this.newCategory.name) {
+        if (this.temporaryListOfCategories.name !== this.newCategory.name) {
           this.temporaryListOfCategories = this.newCategory;
           this.listOfCategories.push(this.newCategory);
         }
@@ -79,7 +80,7 @@ export class CategorizationComponent implements OnInit {
 
   /**
 * Create a new banking category
-* @param newCategory 
+* @param newCategory
 */
   private createOperationCategory(pNewCategory: string) {
     if (pNewCategory) {
@@ -94,7 +95,7 @@ export class CategorizationComponent implements OnInit {
 
   /**
  * Add existing peration to a category when row selected
- * @param event 
+ * @param event
  */
   private categoriseOnRowClick(event) {
     switch (this.selectedCategory) {
@@ -138,4 +139,5 @@ export class CategorizationComponent implements OnInit {
       { field: 'bankingOperationCategory', header: 'Catégorie', width: '10%' }
     ];
   }
+
 }

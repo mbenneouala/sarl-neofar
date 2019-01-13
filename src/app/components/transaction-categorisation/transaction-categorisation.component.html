@@ -1,0 +1,68 @@
+<!-- Banking operations table -->
+<div class="ui-g-6">
+    <p-table [columns]="cols" [value]="bankingOperations" [resizableColumns]="true" [scrollable]="true" scrollHeight="400px"
+      [paginator]="true" [rows]="15" [reorderableColumns]="true" [lazy]="false" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalRecords"
+      [loading]="loading" selectionMode="single" (onRowSelect)="onRowSelect($event); categoriseOnRowClick($event)">
+      <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+          <col *ngFor="let col of columns" [style.width]="col.width">
+        </colgroup>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns" class="ui-resizable-column">
+            {{rowData[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <div class="ui-g-6">
+    <!-- Create a new banking category -->
+    <p>
+      <span class="ui-float-label">
+        <input #newCategory id="float-input" type="text" size="28" pInputText (keyup.enter)="createOperationCategory(newCategory.value)"
+          (blur)="createOperationCategory(newCategory.value); newCategory.value=''">
+        <label for="float-input">Add a new category...</label>
+        <p-button style="margin-left:2%;" (onClick)="createOperationCategory(newCategory.value)" icon="pi pi-check" label="Add"></p-button>
+      </span>
+    </p>
+  
+    <!-- Manage categories -->
+    <div class="categories-border">
+      <div *ngFor="let category of categories">
+        <p-radioButton #isSelectedCategory value="{{category}}" label="{{category}}" (onClick)="onRadioButtonClick(isSelectedCategory.value)">
+        </p-radioButton>
+      </div>
+    </div>
+  
+    <!-- Manage categories with SLIDERS -->
+    <div class="ui-g" id="sliders-border">
+      <div class="ui-g-4">
+          Courses : {{ sumOfCourses }}
+          <p-slider [(ngModel)]="sumOfCourses" [min]="0" [max]="1000"></p-slider>
+          Transports : {{ sumOfTransportsEnCommun }}
+          <p-slider [(ngModel)]="sumOfTransportsEnCommun" [min]="0" [max]="1000"></p-slider>
+          Abonnements : {{ sumOfAbonnements }}
+          <p-slider [(ngModel)]="sumOfAbonnements" [min]="0" [max]="1000"></p-slider>
+          Loisirs : {{ sumOfLoisirs }}
+          <p-slider [(ngModel)]="sumOfLoisirs" [min]="0" [max]="1000"></p-slider>
+      </div>
+      <div class="ui-g-4">
+        <div *ngFor="let category of listOfCategories">
+          {{category.name}} : {{category.sumOfCategorizedOperations}}
+          <p-slider [(ngModel)]="category.sumOfCategorizedOperations" [min]="0" [max]="1000"></p-slider>
+          <!-- <button class="zero-button" (click)="initialise()">x</button> -->
+        </div>
+      </div>
+    </div>
+  </div>

@@ -37,9 +37,10 @@ import {SliderModule} from 'primeng/slider';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RadioButtonModule} from 'primeng/radiobutton';
-import {CategorizationComponent} from './categorization/categorization.component';
 import {HighlightDirective} from 'src/app/directives/highlight.directive';
 import { TableOfBankTransactionsComponent } from './components/table-of-bank-transactions/table-of-bank-transactions.component';
+import { ScrollableMenuComponent } from './components/scrollable-menu/scrollable-menu.component';
+import { TransactionCategorisationComponent } from './components/transaction-categorisation/transaction-categorisation.component';
 
 
 @NgModule({
@@ -47,9 +48,10 @@ import { TableOfBankTransactionsComponent } from './components/table-of-bank-tra
     AppComponent,
     TableOfOperationsComponent,
     ContainerComponent,
-    CategorizationComponent,
     HighlightDirective,
-    TableOfBankTransactionsComponent
+    TableOfBankTransactionsComponent,
+    ScrollableMenuComponent,
+    TransactionCategorisationComponent
   ],
   imports: [
     FormsModule,

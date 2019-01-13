@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategorizationComponent } from './categorization.component';
+import { ScrollableMenuComponent } from './scrollable-menu.component';
 
-describe('CategorizationComponent', () => {
-  let component: CategorizationComponent;
-  let fixture: ComponentFixture<CategorizationComponent>;
+describe('ScrollableMenuComponent', () => {
+  let component: ScrollableMenuComponent;
+  let fixture: ComponentFixture<ScrollableMenuComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CategorizationComponent ]
+      declarations: [ ScrollableMenuComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CategorizationComponent);
+    fixture = TestBed.createComponent(ScrollableMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
